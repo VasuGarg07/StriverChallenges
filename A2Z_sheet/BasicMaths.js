@@ -114,7 +114,6 @@ class BasicMaths {
         }
         return true
     }
-
 }
 
 const mathHelper = new BasicMaths();
