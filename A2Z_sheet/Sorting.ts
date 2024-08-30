@@ -1,16 +1,6 @@
+import { Utils } from "./Utils";
+
 export namespace Sorting {
-
-    /**
-     * Swaps two elements in an array.
-     * 
-     * @param arr The array where elements are to be swapped.
-     * @param i The index of the first element.
-     * @param j The index of the second element.
-     */
-    export function swap(arr: number[], i: number, j: number): void {
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-
     /**
      * Sorts an array using the selection sort algorithm.
      * 
@@ -25,7 +15,7 @@ export namespace Sorting {
                     min = j;
                 }
             }
-            swap(arr, i, min);
+            Utils.swap(arr, i, min);
         }
         return arr;
     }
@@ -40,7 +30,7 @@ export namespace Sorting {
         for (let i = arr.length - 1; i > 0; i--) {
             for (let j = 0; j < i; j++) {
                 if (arr[j] > arr[j + 1]) {
-                    swap(arr, j, j + 1);
+                    Utils.swap(arr, j, j + 1);
                 }
             }
         }
@@ -57,7 +47,7 @@ export namespace Sorting {
         for (let i = 1; i < arr.length; i++) {
             for (let j = i; j > 0; j--) {
                 if (arr[j - 1] > arr[j]) {
-                    swap(arr, j - 1, j);
+                    Utils.swap(arr, j - 1, j);
                 }
             }
         }
@@ -75,7 +65,7 @@ export namespace Sorting {
         if (n == 0) return arr;
         for (let i = 0; i < n; i++) {
             if (arr[i] > arr[i + 1]) {
-                swap(arr, i, i + 1);
+                Utils.swap(arr, i, i + 1);
             }
         }
         return recursiveBubbleSort(arr, n - 1);
@@ -92,7 +82,7 @@ export namespace Sorting {
         if (i == arr.length) return arr;
         for (let j = i; j > 0; j--) {
             if (arr[j - 1] > arr[j]) {
-                swap(arr, j - 1, j);
+                Utils.swap(arr, j - 1, j);
             }
         }
         return recursiveInsertionSort(arr, i + 1);
@@ -163,9 +153,9 @@ export namespace Sorting {
         while (i < j) {
             while (i <= high - 1 && arr[i] <= pivot) i++;
             while (j >= low + 1 && arr[j] > pivot) j--;
-            if (i < j) swap(arr, i, j);
+            if (i < j) Utils.swap(arr, i, j);
         }
-        swap(arr, low, j);
+        Utils.swap(arr, low, j);
         return j;
     }
 

@@ -1,16 +1,6 @@
-namespace ArrayHelper {
+import { Utils } from "./Utils";
 
-    /**
-     * Swaps two elements in an array.
-     * @param arr - The array containing the elements to swap.
-     * @param i - The index of the first element to swap.
-     * @param j - The index of the second element to swap.
-     * @returns The array with the swapped elements.
-     */
-    export function swap(arr: number[], i: number, j: number): number[] {
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-        return arr;
-    }
+namespace ArrayEasy {
 
     /**
      * Finds the largest element in an array.
@@ -116,7 +106,7 @@ namespace ArrayHelper {
      */
     export function reversal(arr: number[], left: number, right: number): void {
         while (left < right) {
-            swap(arr, left, right);
+            Utils.swap(arr, left, right);
             left++;
             right--;
         }
@@ -177,7 +167,7 @@ namespace ArrayHelper {
 
         for (let i = j + 1; i < arr.length; i++) {
             if (arr[i]) {
-                swap(arr, i, j);
+                Utils.swap(arr, i, j);
                 j++;
             }
         }
@@ -339,6 +329,7 @@ namespace ArrayHelper {
         return maxLen;
     }
 
+    // For all integers
     export function longestSubarrayOfSumK2(arr: number[], k: number): number {
         let maxLen = 0;
 
@@ -358,7 +349,142 @@ namespace ArrayHelper {
 
 }
 
-const arr = [-1, 1, 1];
-const k = 1
+namespace ArrayMedium {
+    export function twoSum(arr: number[], target: number): string {
+        let map: Map<number, number> = new Map();
 
-console.log(ArrayHelper.longestSubarrayOfSumK2(arr, k));
+        for (let i = 0; i < arr.length; i++) {
+            let idx = map.get(target - arr[i]);
+            if (idx) {
+                return `YES || ${i}, ${idx}`;
+            } else {
+                map.set(arr[i], i);
+            }
+        }
+        return 'NO || -1, -1';
+    }
+
+    export function sort012ArrayInPlace(arr: number[]): void {
+        let low = 0;
+        let mid = 0;
+        let high = arr.length - 1;
+
+        while (mid <= high) {
+            switch (arr[mid]) {
+                case 0:
+                    Utils.swap(arr, low, mid);
+                    low++;
+                    mid++;
+                    break;
+                case 1:
+                    mid++;
+                    break;
+                case 2:
+                    Utils.swap(arr, mid, high);
+                    high--;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+
+    export function findMajorityElement(arr: number[]): number {
+        let count = 0;
+        let element!: number;
+
+        for (let i = 0; i < arr.length; i++) {
+            if (count == 0) {
+                element = arr[i];
+            } else if (element == arr[i]) {
+                count++;
+            } else {
+                count--;
+            }
+        }
+        console.log(count)
+        return element;
+    }
+
+    export function maxSubArraySum(arr: number[]): number {
+        let maxSum = 0;
+
+        for (let i = 0; i < arr.length; i++) {
+            let sum = 0;
+            for (let j = i; j < arr.length; j++) {
+                sum += arr[j];
+                maxSum = Math.max(sum, maxSum);
+            }
+        }
+        return maxSum;
+    }
+
+    export function optimizedMaxSubArray(arr: number[]): number[] {
+        let maxSum = -Infinity;
+        let indices = [0, 0];
+        let sum = 0;
+
+        for (let i = 0; i < arr.length; i++) {
+            sum += arr[i];
+
+            if (sum > maxSum) {
+                maxSum = sum;
+                indices[1] = i;
+            }
+
+            if (sum < 0) {
+                sum = 0;
+                indices[i + 1]
+            }
+        }
+
+        // empty arrray case
+        if (maxSum < 0) {
+            maxSum = -1;
+        }
+        return indices;
+    }
+
+    export function stockBuySell(arr: number[]): number {
+        let buy = arr[0];
+        let profit = 0;
+
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] < buy) {
+                buy = arr[i];
+            } else if (arr[i] - buy > profit) {
+                profit = arr[i] - buy;
+            }
+        }
+
+        return profit;
+    }
+
+    // Condition: equal number of positive and negative elements
+    export function rearrangeBySign(arr: number[]): void {
+        let positives: number[] = Array(arr.length / 2);
+        let negatives: number[] = Array(arr.length / 2);
+
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] > 0) {
+                positives.push(arr[i])
+            } else {
+                negatives.push(arr[i]);
+            }
+        }
+
+        let pos = 0, neg = 0;
+        for (let i = 0; i < arr.length; i++) {
+            if (i % 2 === 0 && pos < positives.length) {
+                arr[i] = positives[pos++];
+            } else if (neg < negatives.length) {
+                arr[i] = negatives[neg++];
+            }
+        }
+    }
+}
+
+const arr = [1, 2, -3, -1, -2, 3];
+ArrayMedium.rearrangeBySign(arr);
+console.log(arr);
