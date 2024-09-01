@@ -99,29 +99,15 @@ namespace ArrayEasy {
     }
 
     /**
-     * Reverses a section of an array from 'left' to 'right'.
-     * @param arr - The array to reverse.
-     * @param left - The starting index of the section to reverse.
-     * @param right - The ending index of the section to reverse.
-     */
-    export function reversal(arr: number[], left: number, right: number): void {
-        while (left < right) {
-            Utils.swap(arr, left, right);
-            left++;
-            right--;
-        }
-    }
-
-    /**
      * Rotates an array to the right by 'k' positions using the reversal algorithm.
      * @param arr - The array to rotate.
      * @param k - The number of positions to rotate the array.
      * @returns The rotated array.
      */
     export function rightRotateByK(arr: number[], k: number): number[] {
-        reversal(arr, 0, arr.length - 1 - k);
-        reversal(arr, arr.length - k, arr.length - 1);
-        reversal(arr, 0, arr.length - 1);
+        Utils.reversal(arr, 0, arr.length - 1 - k);
+        Utils.reversal(arr, arr.length - k, arr.length - 1);
+        Utils.reversal(arr, 0, arr.length - 1);
         return arr;
     }
 
@@ -131,9 +117,9 @@ namespace ArrayEasy {
      * @param k - The number of positions to rotate the array.
      */
     export function leftRotateByK(arr: number[], k: number): void {
-        reversal(arr, 0, k - 1);
-        reversal(arr, k, arr.length - 1);
-        reversal(arr, 0, arr.length - 1);
+        Utils.reversal(arr, 0, k - 1);
+        Utils.reversal(arr, k, arr.length - 1);
+        Utils.reversal(arr, 0, arr.length - 1);
     }
 
     /**
@@ -167,7 +153,7 @@ namespace ArrayEasy {
 
         for (let i = j + 1; i < arr.length; i++) {
             if (arr[i]) {
-                Utils.swap(arr, i, j);
+                Utils.arraySwap(arr, i, j);
                 j++;
             }
         }
@@ -372,7 +358,7 @@ namespace ArrayMedium {
         while (mid <= high) {
             switch (arr[mid]) {
                 case 0:
-                    Utils.swap(arr, low, mid);
+                    Utils.arraySwap(arr, low, mid);
                     low++;
                     mid++;
                     break;
@@ -380,7 +366,7 @@ namespace ArrayMedium {
                     mid++;
                     break;
                 case 2:
-                    Utils.swap(arr, mid, high);
+                    Utils.arraySwap(arr, mid, high);
                     high--;
                     break;
                 default:
@@ -483,8 +469,126 @@ namespace ArrayMedium {
             }
         }
     }
+
+    export function nextPermutation(arr: number[]): void {
+
+        // find break point
+        let breakPoint = -1;
+        for (let i = arr.length - 2; i >= 0; i--) {
+            if (arr[i] < arr[i + 1]) {
+                breakPoint = i;
+                break;
+            }
+        }
+
+        // if break point does not exist -> array sorted in descending order
+        if (breakPoint < 0) {
+            arr.reverse();
+        }
+
+        // swap break point with next greatest element
+        for (let i = arr.length - 1; i >= breakPoint + 1; i--) {
+            if (arr[i] > arr[breakPoint]) {
+                Utils.arraySwap(arr, i, breakPoint);
+                break;
+            }
+        }
+
+        // reverse the second half of array
+        Utils.reversal(arr, breakPoint + 1, arr.length - 1)
+    }
+
+    /**
+     * A Leader is an element that is greater than all of the elements on its right side in the array.
+     * 1st Intituition - for every index i, need to compare arr[i] current leader.
+     * @param {number[]} arr 
+     * @returns {number[]}
+     */
+    export function findAllLeaders(arr: number[]): number[] {
+        if (arr.length == 1) return arr;
+
+        let currentLeader = arr.length - 1;
+        let ans: number[] = [arr[currentLeader]];
+
+        for (let i = arr.length - 2; i >= 0; i--) {
+            if (arr[i] > arr[currentLeader]) {
+                currentLeader = i;
+                ans.push(arr[i]);
+            }
+        }
+
+        return ans.reverse();
+    }
+
+    export function longestConsecutiveSequence(arr: number[]): number {
+        let longest = 1;
+        let count = 0;
+        let set: Set<number> = new Set(arr);
+
+        set.forEach(el => {
+            let num = el;
+            // Starting point
+            if (!set.has(num - 1)) {
+                count = 1;
+                // find sequence length
+                while (set.has(num + 1)) {
+                    count++;
+                    num++;
+                }
+
+                // update max Count
+                if (count > longest) {
+                    longest = count;
+                }
+            }
+        })
+
+        return longest
+    }
+
+    export function setMatrixZero(arr: number[][]): void {
+        let rows: number[] = Array(arr.length).fill(0);
+        let columns: number[] = Array(arr[0].length).fill(0);
+
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr[i].length; j++) {
+                if (!arr[i][j]) {
+                    rows[i] = 1;
+                    columns[j] = 1;
+                }
+            }
+        }
+
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr[i].length; j++) {
+                if (rows[i] || columns[j]) {
+                    arr[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    export function rotateMatrixBy90(arr: number[][]) {
+        let len = arr.length;
+        /**
+         * 1. one way is to create a new array `result` and while traversing do :- result[i][j] = arr[len - 1 - i][j]
+         * 2. second method : use transpose followed by horizontal reversal
+         */
+
+        // matrix transpose
+        for (let i = 0; i < len; i++) {
+            for (let j = i; j < len; j++) {
+                let temp = arr[i][j];
+                arr[i][j] = arr[j][i];
+                arr[j][i] = temp;
+            }
+        }
+
+        // Reverse each row
+        arr.map(row => row.reverse())
+    }
 }
 
-const arr = [1, 2, -3, -1, -2, 3];
-ArrayMedium.rearrangeBySign(arr);
-console.log(arr);
+const arr = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+ArrayMedium.rotateMatrixBy90(arr)
+Utils.printMatrix(arr);
