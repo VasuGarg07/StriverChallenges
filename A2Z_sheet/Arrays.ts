@@ -336,6 +336,12 @@ namespace ArrayEasy {
 }
 
 namespace ArrayMedium {
+    /**
+     * Function to check if there exists a pair of numbers in the array that sums to a target value.
+     * @param {number[]} arr - Array of integers.
+     * @param {number} target - Target sum value.
+     * @returns {string} - Returns 'YES' with the indices if a pair is found, otherwise returns 'NO'.
+     */
     export function twoSum(arr: number[], target: number): string {
         let map: Map<number, number> = new Map();
 
@@ -350,6 +356,11 @@ namespace ArrayMedium {
         return 'NO || -1, -1';
     }
 
+    /**
+     * Function to sort an array of 0s, 1s, and 2s in place.
+     * Uses the Dutch National Flag algorithm.
+     * @param {number[]} arr - Array of integers (0s, 1s, and 2s).
+     */
     export function sort012ArrayInPlace(arr: number[]): void {
         let low = 0;
         let mid = 0;
@@ -376,6 +387,12 @@ namespace ArrayMedium {
 
     }
 
+    /**
+     * Function to find the majority element in an array.
+     * A majority element is one that occurs more than half the time.
+     * @param {number[]} arr - Array of integers.
+     * @returns {number} - The majority element.
+     */
     export function findMajorityElement(arr: number[]): number {
         let count = 0;
         let element!: number;
@@ -393,6 +410,11 @@ namespace ArrayMedium {
         return element;
     }
 
+    /**
+     * Function to find the maximum subarray sum using a brute force approach.
+     * @param {number[]} arr - Array of integers.
+     * @returns {number} - Maximum sum of a contiguous subarray.
+     */
     export function maxSubArraySum(arr: number[]): number {
         let maxSum = 0;
 
@@ -406,6 +428,11 @@ namespace ArrayMedium {
         return maxSum;
     }
 
+    /**
+     * Optimized version of finding the maximum subarray sum using Kadane's algorithm.
+     * @param {number[]} arr - Array of integers.
+     * @returns {number[]} - Indices of the subarray with the maximum sum.
+     */
     export function optimizedMaxSubArray(arr: number[]): number[] {
         let maxSum = -Infinity;
         let indices = [0, 0];
@@ -432,6 +459,12 @@ namespace ArrayMedium {
         return indices;
     }
 
+    /**
+     * Function to calculate the maximum profit from buying and selling stocks.
+     * You can only buy and sell once.
+     * @param {number[]} arr - Array of stock prices.
+     * @returns {number} - Maximum profit.
+     */
     export function stockBuySell(arr: number[]): number {
         let buy = arr[0];
         let profit = 0;
@@ -447,7 +480,11 @@ namespace ArrayMedium {
         return profit;
     }
 
-    // Condition: equal number of positive and negative elements
+    /**
+     * Function to rearrange an array such that positive and negative numbers alternate.
+     * Assumes an equal number of positive and negative numbers.
+     * @param {number[]} arr - Array of integers with equal positives and negatives.
+     */
     export function rearrangeBySign(arr: number[]): void {
         let positives: number[] = Array(arr.length / 2);
         let negatives: number[] = Array(arr.length / 2);
@@ -470,6 +507,10 @@ namespace ArrayMedium {
         }
     }
 
+    /**
+     * Function to generate the next lexicographical permutation of an array.
+     * @param {number[]} arr - Array of integers.
+     */
     export function nextPermutation(arr: number[]): void {
 
         // find break point
@@ -499,10 +540,10 @@ namespace ArrayMedium {
     }
 
     /**
-     * A Leader is an element that is greater than all of the elements on its right side in the array.
-     * 1st Intituition - for every index i, need to compare arr[i] current leader.
-     * @param {number[]} arr 
-     * @returns {number[]}
+     * Function to find all leader elements in an array.
+     * A leader is an element greater than all elements to its right.
+     * @param {number[]} arr - Array of integers.
+     * @returns {number[]} - Array of leader elements.
      */
     export function findAllLeaders(arr: number[]): number[] {
         if (arr.length == 1) return arr;
@@ -520,6 +561,11 @@ namespace ArrayMedium {
         return ans.reverse();
     }
 
+    /**
+     * Function to find the longest consecutive sequence of integers in an array.
+     * @param {number[]} arr - Array of integers.
+     * @returns {number} - Length of the longest consecutive sequence.
+     */
     export function longestConsecutiveSequence(arr: number[]): number {
         let longest = 1;
         let count = 0;
@@ -546,6 +592,10 @@ namespace ArrayMedium {
         return longest
     }
 
+    /**
+     * Function to set entire rows and columns to zero in a matrix if an element is zero.
+     * @param {number[][]} arr - 2D array (matrix) of integers.
+     */
     export function setMatrixZero(arr: number[][]): void {
         let rows: number[] = Array(arr.length).fill(0);
         let columns: number[] = Array(arr[0].length).fill(0);
@@ -568,6 +618,10 @@ namespace ArrayMedium {
         }
     }
 
+    /**
+     * Function to rotate a matrix by 90 degrees in place.
+     * @param {number[][]} arr - 2D array (matrix) of integers.
+     */
     export function rotateMatrixBy90(arr: number[][]) {
         let len = arr.length;
         /**
@@ -587,8 +641,285 @@ namespace ArrayMedium {
         // Reverse each row
         arr.map(row => row.reverse())
     }
+
+    /**
+     * Function to traverse a matrix in spiral order and return the traversal as a string.
+     * @param {number[][]} arr - 2D array (matrix) of integers.
+     * @returns {string} - A string representation of the spiral traversal.
+     */
+    export function matrixSpiralTraversal(arr: number[][]): string {
+        let [left, right, top, bottom] = [0, arr[0].length - 1, 0, arr.length - 1];
+        let answer: string = '';
+
+        while (left <= right && top <= bottom) {
+            // left -> right
+            for (let i = left; i <= right; i++) {
+                answer += arr[top][i] + ' ';
+            }
+            top++;
+
+            // top -> bottom
+            for (let i = top; i <= bottom; i++) {
+                answer += arr[i][right] + ' ';
+            }
+            right--;
+
+            // right -> left
+            if (top <= bottom) {
+                for (let i = right; i >= left; i--) {
+                    answer += arr[bottom][i] + ' ';
+                }
+                bottom--;
+            }
+
+            // bottom -> up
+            if (left <= right) {
+                for (let i = bottom; i >= top; i--) {
+                    answer += arr[i][left] + ' ';
+                }
+                left++;
+            }
+
+        }
+        return answer;
+    }
+
+    /**
+     * Function to count the number of subarrays that sum up to a given value `k`.
+     * @param {number[]} arr - Array of integers.
+     * @param {number} k - Target sum.
+     * @returns {number} - Number of subarrays with sum equal to `k`.
+     */
+    export function totalSubarraySumK(arr: number[], k: number): number {
+        let count = 0;
+
+        for (let i = 0; i < arr.length; i++) {
+            let sum = 0;
+
+            for (let j = i; j < arr.length; j++) {
+                sum += arr[j];
+
+                if (sum == k) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
 }
 
-const arr = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-ArrayMedium.rotateMatrixBy90(arr)
-Utils.printMatrix(arr);
+namespace ArrayHard {
+    /**
+     * Builds Pascal's Triangle and solves three variations:
+     * 1. Given a row and column, returns the element at that position.
+     * 2. Given a row number, returns the entire row of Pascal's Triangle.
+     * 3. Given a number n, prints the first n rows of Pascal's Triangle.
+     * 
+     * @param {number} row - The number of rows to generate.
+     * @param {number} column - The column index for variation 1.
+     */
+    export function pascalTriange(row: number, column: number) {
+        let triangle: number[][] = [];
+
+        for (let i = 0; i < row; i++) {
+            let curr: number[] = Array(i + 1).fill(1);
+            let prev = triangle[i - 1];
+
+            if (prev) {
+                for (let j = 1; j < i; j++) {
+                    curr[j] = prev[j - 1] + prev[j];
+                }
+            }
+            triangle.push(curr);
+        }
+
+        console.log(triangle[row - 1][column - 1]);  // Variation 1
+        console.log(triangle[row - 1]);              // Variation 2
+        Utils.printMatrix(triangle);                 // Variation 3
+    }
+
+    /**
+     * Finds all elements in the array that appear more than n/3 times.
+     * 
+     * @param {number[]} arr - The input array.
+     * @returns {number[]} - An array of elements appearing more than n/3 times.
+     */
+    export function majorityElementN3(arr: number[]): number[] {
+        let ans: number[] = [];
+        let map: { [key: number]: number } = {};
+
+        for (let num of arr) {
+            map[num] = (map[num] || 0) + 1;
+        }
+
+        for (let key in map) {
+            if (map[key] >= Math.floor(arr.length / 3)) {
+                ans.push(+key);
+            }
+        }
+
+        return ans;
+    }
+
+    /**
+     * Finds all unique triplets in the array which sum to zero.
+     * 
+     * @param {number[]} arr - The input array.
+     * @returns {number[][]} - An array of triplets that sum to zero.
+     */
+    export function threeSum(arr: number[]): number[][] {
+        let sorted = arr.sort((a, b) => a - b);
+        let ans: number[][] = [];
+
+        for (let i = 0; i < arr.length - 1; i++) {
+            if (i && arr[i] == arr[i - 1]) continue;
+
+            let j = i + 1;
+            let k = arr.length - 1;
+
+            while (j < k) {
+                let sum = arr[i] + arr[j] + arr[k];
+
+                if (sum > 0) {
+                    k--;
+                } else if (sum < 0) {
+                    j++;
+                } else {
+                    ans.push([arr[i], arr[j], arr[k]]);
+                    do { j++; } while (j < k && arr[j] == arr[j - 1]);
+                    do { k--; } while (j < k && arr[k] == arr[j + 1]);
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    /**
+     * Finds the length of the longest subarray with zero sum.
+     * 
+     * @param {number[]} arr - The input array.
+     * @returns {number} - Length of the longest subarray with zero sum.
+     */
+    export function longestSubarrayZeroSum(arr: number[]): number {
+        let max = 0;
+        let sum = 0;
+        let map: Map<number, number> = new Map();
+
+        for (let i = 0; i < arr.length - 1; i++) {
+            sum += arr[i];
+
+            if (!sum) {
+                max = i + 1;
+            } else {
+                if (map.has(sum)) {
+                    max = Math.max(max, i - map.get(sum)!);
+                } else {
+                    map.set(sum, i);
+                }
+            }
+        }
+
+        return max;
+    }
+
+    /**
+     * Counts the number of subarrays with XOR equal to k.
+     * 
+     * @param {number[]} arr - The input array.
+     * @param {number} k - The target XOR value.
+     * @returns {number} - The count of subarrays with XOR equal to k.
+     */
+    export function countSubarrayXorK(arr: number[], k: number): number {
+        let count = 0;
+        let xr = 0;
+        let map: Map<number, number> = new Map();
+        map.set(xr, 1);
+
+        for (let i = 0; i < arr.length; i++) {
+            xr = xr ^ arr[i];
+            const x = xr ^ k;
+            count += map.get(x) || 0;
+            map.set(xr, (map.get(xr) || 0) + 1);
+        }
+
+        return count;
+    }
+
+    /**
+     * Merges overlapping intervals.
+     * 
+     * @param {number[][]} intervals - An array of intervals.
+     * @returns {number[][]} - An array of merged intervals.
+     */
+    export function overlappingIntervals(intervals: number[][]): number[][] {
+        intervals = intervals.sort((a, b) => a[0] - b[0]);
+        const answer: number[][] = [intervals[0]];
+
+        for (let i = 1; i < intervals.length; i++) {
+            const last = answer[answer.length - 1];
+            const curr = intervals[i];
+
+            if (last[1] >= curr[0]) {
+                last[1] = Math.max(last[1], curr[1]);
+            } else {
+                answer.push(curr);
+            }
+        }
+
+        return answer;
+    }
+
+    /**
+     * Merges two sorted arrays without using extra space.
+     * 
+     * @param {number[]} arr1 - The first sorted array.
+     * @param {number[]} arr2 - The second sorted array.
+     */
+    export function mergeArraysWithoutExtraSpace(arr1: number[], arr2: number[]) {
+        let left = arr1.length - 1;
+        let right = 0;
+
+        while (left >= 0 && right < arr2.length) {
+            if (arr1[left] > arr2[right]) {
+                [arr1[left], arr2[right]] = [arr2[right], arr1[left]];
+                left--, right++;
+            } else {
+                break;
+            }
+        }
+
+        arr1.sort((a, b) => a - b);
+        arr2.sort((a, b) => a - b);
+    }
+
+    /**
+     * Finds the missing and repeating numbers in an array where each number is in the range [1, n].
+     * 
+     * @param {number[]} arr - The input array.
+     */
+    export function findMissingAndRepeating(arr: number[]) {
+        let repeating: number = 0;
+        let missing: number = 0;
+        let set: Set<number> = new Set();
+        let sum = 0;
+        let apsum = arr.length * (arr.length + 1) / 2;
+
+        for (let i = 0; i < arr.length; i++) {
+            sum += arr[i];
+            if (set.has(arr[i])) {
+                repeating = arr[i];
+            } else {
+                set.add(arr[i]);
+            }
+        }
+
+        missing = apsum - sum + repeating;
+        console.log('Missing: ', missing, ' Repeating: ', repeating);
+    }
+}
+
+
+const arr = [3, 1, 2, 5, 3];
+ArrayHard.findMissingAndRepeating(arr);
