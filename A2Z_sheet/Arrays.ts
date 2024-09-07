@@ -587,8 +587,93 @@ namespace ArrayMedium {
         // Reverse each row
         arr.map(row => row.reverse())
     }
+
+    export function matrixSpiralTraversal(arr: number[][]): string {
+        let [left, right, top, bottom] = [0, arr[0].length - 1, 0, arr.length - 1];
+        let answer: string = '';
+
+        while (left <= right && top <= bottom) {
+            // left -> right
+            for (let i = left; i <= right; i++) {
+                answer += arr[top][i] + ' ';
+            }
+            top++;
+
+            // top -> bottom
+            for (let i = top; i <= bottom; i++) {
+                answer += arr[i][right] + ' ';
+            }
+            right--;
+
+            // right -> left
+            if (top <= bottom) {
+                for (let i = right; i >= left; i--) {
+                    answer += arr[bottom][i] + ' ';
+                }
+                bottom--;
+            }
+
+            // bottom -> up
+            if (left <= right) {
+                for (let i = bottom; i >= top; i--) {
+                    answer += arr[i][left] + ' ';
+                }
+                left++;
+            }
+
+        }
+        return answer;
+    }
+
+    export function totalSubarraySumK(arr: number[], k: number): number {
+        let count = 0;
+
+        for (let i = 0; i < arr.length; i++) {
+            let sum = 0;
+
+            for (let j = i; j < arr.length; j++) {
+                sum += arr[j];
+
+                if (sum == k) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
 }
 
-const arr = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-ArrayMedium.rotateMatrixBy90(arr)
-Utils.printMatrix(arr);
+namespace ArrayHard {
+    export function pascalTriange(row: number, column: number) {
+        let triangle: number[][] = [];
+
+        for (let i = 0; i < row; i++) {
+            let curr: number[] = Array(i + 1).fill(1);
+            let prev = triangle[i - 1];
+
+            if (prev) {
+                for (let j = 1; j < i; j++) {
+                    curr[j] = prev[j - 1] + prev[j];
+                }
+            }
+
+            // for (let j = 0; j <= i; j++) {
+            //     curr[j] = (prev[j - 1] || 0) + (prev[j] || 0);
+            // }
+            triangle.push(curr)
+
+        }
+
+        // Variation 1: Given row number r and column number c. Print the element at position (r, c) in Pascal’s triangle.
+        console.log(triangle[row - 1][column - 1])
+
+        // Variation 2: Given the row number n. Print the n-th row of Pascal’s triangle.
+        console.log(triangle[row - 1])
+
+        // Variation 3: Given the number of rows n. Print the first n rows of Pascal’s triangle
+        Utils.printMatrix(triangle)
+    }
+}
+
+ArrayHard.pascalTriange(5, 3);
