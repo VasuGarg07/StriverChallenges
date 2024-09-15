@@ -35,4 +35,8 @@ export namespace Utils {
             console.log(row.join(' '))
         })
     }
+
+    export function middleIndex(left: number, right: number): number {
+        return Math.floor((left + right) / 2);
+    }
 }
