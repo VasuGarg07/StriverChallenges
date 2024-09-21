@@ -331,8 +331,92 @@ namespace NumericBinarySearch {
 
         return -1;
     }
+
+    export function kokoEatsBananas(arr: number[], hours: number): number {
+        let i = 1, j = Math.max(...arr);
+
+        if (hours === arr.length) return j;
+
+        function calculateTotalHours(arr: number[], canEat: number) {
+            return arr.reduce((totalHours, num) => totalHours + Math.ceil(num / canEat), 0);
+        }
+
+        let ans = j;
+
+        while (i <= j) {
+            const canEat = Utils.middleIndex(i, j);
+            const totalH = calculateTotalHours(arr, canEat);
+
+            if (totalH <= hours) {
+                ans = canEat;
+                j = canEat - 1;
+            } else {
+                i = canEat + 1;
+            }
+        }
+
+        return ans
+    }
+
+    export function smallestDivisor(arr: number[], limit: number): number {
+        let i = 1, j = Math.max(...arr);
+        let ans = 1;
+
+        function divisorSum(arr: number[], divisor: number): number {
+            return arr.reduce((prev, num) => prev + Math.ceil(num / divisor), 0)
+        }
+
+        while (i <= j) {
+            const mid = Utils.middleIndex(i, j);
+            const totalSum = divisorSum(arr, mid);
+
+            if (totalSum <= limit) {
+                ans = mid;
+                j = mid - 1;
+            } else {
+                i = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+
+    export function minimumShipCapacity(weights: number[], days: number): number {
+        let i = Math.max(...weights),
+            j = weights.reduce((prev, num) => prev + num, 0);
+
+        function findDays(weights: number[], capacity: number): number {
+            let load = 0, day = 1;
+
+            for (let i = 0; i < weights.length; i++) {
+                if (load + weights[i] > capacity) {
+                    day += 1;
+                    load = weights[i];
+                } else {
+                    load += weights[i];
+                }
+            }
+
+            return day;
+        }
+
+        while (i <= j) {
+            const mid = Utils.middleIndex(i, j);
+            const totalD = findDays(weights, mid);
+
+            console.log(mid, totalD)
+            if (totalD <= days) {
+                j = mid - 1;
+            } else {
+                i = mid + 1;
+            }
+
+        }
+
+        return i;
+    }
 }
 
 
-let ans = NumericBinarySearch.NthRoot(6, 64);
+let ans = NumericBinarySearch.minimumShipCapacity([5, 4, 5, 2, 3, 4, 5, 6], 5);
 console.log(ans);
